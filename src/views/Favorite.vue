@@ -1,16 +1,16 @@
 <template>
-  <MoviesTable :items="movies" />
+  <MoviesTable :items="favoriteMovies" is-favorites />
 </template>
 
 <script>
 export default {
-  name: 'Home',
+  name: 'Favorite',
   components: {
     MoviesTable: () => import('@/components/MoviesTable'),
   },
   computed: {
-    movies() {
-      return this.$store.getters.movies
+    favoriteMovies() {
+      return this.$store.getters.favoriteMovies
     },
   },
 }

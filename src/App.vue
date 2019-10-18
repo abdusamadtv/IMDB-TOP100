@@ -1,36 +1,19 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-app-bar>
+    <v-card tile>
+      <v-tabs background-color="light-blue accent-4" centered dark icons-and-text>
+        <v-tab :to="{ name: 'home' }" exact>
+          Main
+          <v-icon>mdi-home</v-icon>
+        </v-tab>
 
-    <v-content>
-      <HelloWorld />
-    </v-content>
+        <v-tab :to="{ name: 'favorite' }">
+          Favorite
+          <v-icon>mdi-heart</v-icon>
+        </v-tab>
+      </v-tabs>
+
+      <router-view></router-view>
+    </v-card>
   </v-app>
 </template>
-
-<script>
-import HelloWorld from "./components/HelloWorld";
-
-export default {
-  name: "App",
-  components: {
-    HelloWorld
-  },
-  data: () => ({
-    //
-  })
-};
-</script>

@@ -1,0 +1,2 @@
+export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE'
+export const UPDATE_MOVIE = 'UPDATE_MOVIE'
