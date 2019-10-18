@@ -1,4 +1,4 @@
-# imdb-films
+# IMDB-TOP100
 
 You should get API key frome [here](https://www.omdbapi.com/apikey.aspx) and add it to `.env.production` file
 
