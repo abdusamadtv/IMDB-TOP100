@@ -11,7 +11,7 @@
       ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <v-data-table :headers="headers" :items="items" :search="search" class="elevation-1">
+      <v-data-table :headers="headers" :loading="loading" :items="items" :search="search" class="elevation-1">
         <template v-slot:item.action="{ item }">
           <v-btn text icon color="blue" class="mr-2" title="View details" @click="getMovie(item)">
             <v-icon>mdi-library-movie</v-icon>
@@ -43,7 +43,7 @@
     <v-dialog v-model="modal" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar fixed dark color="primary">
-          <v-btn icon dark @click="dialog = false">
+          <v-btn icon dark @click="modal = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>{{ currentMovie.title }}</v-toolbar-title>
@@ -74,7 +74,7 @@
                   <v-list-item-title class="font-weight-bold mt-5">Awards:</v-list-item-title>
                   <v-list-item-subtitle>{{ currentMovie.Awards }}</v-list-item-subtitle>
                   <v-list-item-title class="font-weight-bold mt-5">Plot:</v-list-item-title>
-                  <p class="subtitle-1">{{ currentMovie.Plot }}</p>
+                  <p class="subtitle-1 pb-5">{{ currentMovie.Plot }}</p>
                 </v-list-item-content>
               </v-list-item>
             </v-col>
@@ -103,6 +103,7 @@ export default {
   data: () => ({
     search: '',
     modal: false,
+    loading: false,
     snackbar: false,
     currentMovie: {},
     alertStatus: '',
@@ -142,9 +143,9 @@ export default {
       const API_KEY = process.env.VUE_APP_OMBDB_API_KEY
       const API_URL = process.env.VUE_APP_OMBDB_API_URL
 
-      this.modal = true
-
       if (!movie.Poster) {
+        this.loading = true
+
         try {
           const { data: extendedMovie } = await this.$axios.get(API_URL, {
             params: {
@@ -155,18 +156,21 @@ export default {
             },
           })
 
-          this.currentMovie = extendedMovie
           this.$store.commit(UPDATE_MOVIE, {
             extendedMovie,
             oldMovie: movie,
           })
+          this.loading = false
+          this.modal = true
         } catch ({ message }) {
           this.alertStatus = 'error'
           this.alertMessage = message
         }
       } else {
-        this.currentMovie = movie
+        this.modal = true
       }
+
+      this.currentMovie = this.$store.getters.getMovieById(movie.id)
     },
   },
 }

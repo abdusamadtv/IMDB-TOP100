@@ -13,6 +13,7 @@ export default new Vuex.Store({
   getters: {
     movies: state => state.movies,
     favoriteMovies: state => state.movies.filter(movie => movie.favorite),
+    getMovieById: state => id => state.movies.find(movie => movie.id === id),
   },
   mutations: {
     [TOGGLE_FAVORITE](state, newMovie) {
