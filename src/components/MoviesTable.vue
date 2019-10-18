@@ -160,8 +160,6 @@ export default {
             extendedMovie,
             oldMovie: movie,
           })
-
-          console.log(extendedMovie)
         } catch ({ message }) {
           this.alertStatus = 'error'
           this.alertMessage = message
