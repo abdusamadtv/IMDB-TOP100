@@ -17,3 +17,11 @@
     </v-card>
   </v-app>
 </template>
+
+<style lang="scss">
+@media screen and (max-width: 959px) {
+  #app .mx-small-auto {
+    margin: 0 auto !important;
+  }
+}
+</style>

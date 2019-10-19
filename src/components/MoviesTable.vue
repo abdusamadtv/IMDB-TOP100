@@ -50,29 +50,30 @@
         </v-toolbar>
         <v-container>
           <v-row no-gutters>
-            <v-col md="6" class="pr-5">
-              <v-img class="ml-auto" width="300px" height="457px" :src="currentMovie.Poster"></v-img>
+            <v-col md="6">
+              <v-img class="ml-auto mr-5 mx-small-auto" width="300px" height="457px" :src="currentMovie.Poster"></v-img>
             </v-col>
             <v-col md="6">
-              <!-- <div class="d-flex flex-column"></div> -->
               <v-list-item two-line>
                 <v-list-item-content>
-                  <v-list-item-title class="font-weight-bold">Genre:</v-list-item-title>
-                  <v-list-item-subtitle>{{ currentMovie.Genre }}</v-list-item-subtitle>
-                  <v-list-item-title class="font-weight-bold mt-5">Runtime:</v-list-item-title>
-                  <v-list-item-subtitle>{{ currentMovie.Runtime }}</v-list-item-subtitle>
-                  <v-list-item-title class="font-weight-bold mt-5">Writer:</v-list-item-title>
-                  <v-list-item-subtitle>{{ currentMovie.Writer }}</v-list-item-subtitle>
-                  <v-list-item-title class="font-weight-bold mt-5">Language:</v-list-item-title>
-                  <v-list-item-subtitle>{{ currentMovie.Language }}</v-list-item-subtitle>
-                  <v-list-item-title class="font-weight-bold mt-5">Year:</v-list-item-title>
-                  <v-list-item-subtitle>{{ currentMovie.Year }}</v-list-item-subtitle>
-                  <v-list-item-title class="font-weight-bold mt-5">Country:</v-list-item-title>
-                  <v-list-item-subtitle>{{ currentMovie.Country }}</v-list-item-subtitle>
-                  <v-list-item-title class="font-weight-bold mt-5">Actors:</v-list-item-title>
-                  <v-list-item-subtitle>{{ currentMovie.Actors }}</v-list-item-subtitle>
-                  <v-list-item-title class="font-weight-bold mt-5">Awards:</v-list-item-title>
-                  <v-list-item-subtitle>{{ currentMovie.Awards }}</v-list-item-subtitle>
+                  <template
+                    v-for="(key, index) in [
+                      'Genre',
+                      'Runtime',
+                      'Writer',
+                      'Language',
+                      'Year',
+                      'Country',
+                      'Actors',
+                      'Awards',
+                    ]"
+                  >
+                    <v-list-item-title :key="key" class="font-weight-bold" :class="{ 'mt-5': index > 0 }">
+                      {{ key }}:
+                    </v-list-item-title>
+                    <v-list-item-subtitle :key="index">{{ currentMovie[key] }}</v-list-item-subtitle>
+                  </template>
+
                   <v-list-item-title class="font-weight-bold mt-5">Plot:</v-list-item-title>
                   <p class="subtitle-1 pb-5">{{ currentMovie.Plot }}</p>
                 </v-list-item-content>
@@ -86,7 +87,7 @@
 </template>
 
 <script>
-import { UPDATE_MOVIE, TOGGLE_FAVORITE } from '@/store/mutation-types'
+import { EXTEND_MOVIE, TOGGLE_FAVORITE } from '@/store/mutation-types'
 
 export default {
   name: 'Home',
@@ -140,8 +141,8 @@ export default {
       this.$store.commit(TOGGLE_FAVORITE, movie)
     },
     async getMovie(movie) {
-      const API_KEY = process.env.VUE_APP_OMBDB_API_KEY
-      const API_URL = process.env.VUE_APP_OMBDB_API_URL
+      const API_KEY = process.env.VUE_APP_OMDB_API_KEY
+      const API_URL = process.env.VUE_APP_OMDB_API_URL
 
       if (!movie.Poster) {
         this.loading = true
@@ -156,12 +157,12 @@ export default {
             },
           })
 
-          this.$store.commit(UPDATE_MOVIE, {
+          this.modal = true
+          this.loading = false
+          this.$store.commit(EXTEND_MOVIE, {
             extendedMovie,
             oldMovie: movie,
           })
-          this.loading = false
-          this.modal = true
         } catch ({ message }) {
           this.alertStatus = 'error'
           this.alertMessage = message
