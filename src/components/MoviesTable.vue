@@ -11,7 +11,14 @@
       ></v-text-field>
     </v-card-title>
     <v-card-text>
-      <v-data-table :headers="headers" :loading="loading" :items="items" :search="search" class="elevation-1">
+      <v-data-table
+        sort-by="rank"
+        :headers="headers"
+        :loading="loading"
+        :items="items"
+        :search="search"
+        class="elevation-1"
+      >
         <template v-slot:item.action="{ item }">
           <v-btn text icon color="blue" class="mr-2" title="View details" @click="getMovie(item)">
             <v-icon>mdi-library-movie</v-icon>
